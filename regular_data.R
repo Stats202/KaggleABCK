@@ -106,4 +106,14 @@ names= c("linear","ridge","lasso","PCR","PLS")
 df=data.frame(CV_Name=names,MSE=c(MSE_linear,MSE_ridge,MSE_lasso,MSE_pcr,MSE_pls))
 df
 
+#Best subset selection
 
+subsets_fit <- regsubsets(Outcome ~ ., data = train_data, nvmax = 8)
+subsets.summary <- summary(subsets_fit)
+par(mfrow = c(2, 2))
+plot(subsets.summary$cp, xlab = "Number of variables", ylab = "C_p", type = "l")
+points(which.min(subsets.summary$cp), subsets.summary$cp[which.min(subsets.summary$cp)], col = "red", cex = 2, pch = 20)
+plot(subsets.summary$bic, xlab = "Number of variables", ylab = "BIC", type = "l")
+points(which.min(subsets.summary$bic), subsets.summary$bic[which.min(subsets.summary$bic)], col = "red", cex = 2, pch = 20)
+plot(subsets.summary$adjr2, xlab = "Number of variables", ylab = "Adjusted R^2", type = "l")
+points(which.max(subsets.summary$adjr2), subsets.summary$adjr2[which.max(subsets.summary$adjr2)], col = "red", cex = 2, pch = 20)
